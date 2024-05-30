@@ -1,0 +1,41 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Шоколад Горький",
+      "description": "Горький шоколад высшей категории, вес плитки 100г.",
+      "image": "",
+      "category": 1,
+      "price": 150.8,
+      "created_at": "2024-05-30",
+      "updated_at": "2024-05-30"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Квас",
+      "description": "Квас дрожжевого и кисломолочного бражения, ПЭТ-1л.",
+      "image": "",
+      "category": 1,
+      "price": 80.0,
+      "created_at": "2024-05-30",
+      "updated_at": "2024-05-30"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Ведро для дома",
+      "description": "Пластиковое ведро, объем 20л.",
+      "image": "",
+      "category": 2,
+      "price": 240.0,
+      "created_at": "2024-05-30",
+      "updated_at": "2024-05-30"
+    }
+  }
+]
