@@ -8,37 +8,76 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='название категории')),
-                ('description', models.TextField(verbose_name='описание категории')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=100, verbose_name="название категории"),
+                ),
+                ("description", models.TextField(verbose_name="описание категории")),
             ],
             options={
-                'verbose_name': 'категория',
-                'verbose_name_plural': 'категории',
+                "verbose_name": "категория",
+                "verbose_name_plural": "категории",
             },
         ),
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='название продукта')),
-                ('description', models.TextField(verbose_name='описание продукта')),
-                ('image', models.ImageField(upload_to='product/image', verbose_name='изображение продукта')),
-                ('price', models.FloatField(verbose_name='цена продукта')),
-                ('created_at', models.DateField(verbose_name='дата создания записи о продукте')),
-                ('updated_at', models.DateField(verbose_name='дата изменения записи о продукте')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catalog.category', verbose_name='категория продукта')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=100, verbose_name="название продукта"),
+                ),
+                ("description", models.TextField(verbose_name="описание продукта")),
+                (
+                    "image",
+                    models.ImageField(
+                        upload_to="product/image", verbose_name="изображение продукта"
+                    ),
+                ),
+                ("price", models.FloatField(verbose_name="цена продукта")),
+                (
+                    "created_at",
+                    models.DateField(verbose_name="дата создания записи о продукте"),
+                ),
+                (
+                    "updated_at",
+                    models.DateField(verbose_name="дата изменения записи о продукте"),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="catalog.category",
+                        verbose_name="категория продукта",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'продукт',
-                'verbose_name_plural': 'продукты',
+                "verbose_name": "продукт",
+                "verbose_name_plural": "продукты",
             },
         ),
     ]
