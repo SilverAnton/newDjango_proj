@@ -1,0 +1,11 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {"name": "Пищевая продукция", "description": "продукты питания, напитки"}
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2, "fields": {"name": "Хозтовары", "description": "бытовая химия, средства гигиены, предметы для дома"}
+  }
+]
