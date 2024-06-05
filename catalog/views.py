@@ -11,3 +11,10 @@ def contacts(request):
 
 def product(request):
     return render(request, "product.html")
+
+
+def base(request):
+    context = {
+        'base_templates': 'base'
+    }
+    return render(request, 'base.html', context)
