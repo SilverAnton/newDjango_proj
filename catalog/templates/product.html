@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load my_tags %}
 {% block content %}
         <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-            <h1 class="display-4">Все продукты</h1>
+            <h1 class="display-4">Все товары</h1>
         </div>
-
+        {% for product in products %}
         <div class="container">
             <div class="row text-start">
                 <div class="col-lg-9 col-md-6 col-sm-12">
@@ -11,14 +12,21 @@
                         <div class="card-body">
                             <table class="table table-striped">
                                 <tr>
-                                    <td class="w-25">Наименование продукта</td>
-                                    <td>' '</td>
+                                    <h4>
+                                        <div class="card" style="width: 18rem;">
+                                            <img src="{{ product.image | media_filter }}" class="card-img-top" alt="...">
+                                        </div>
+                                        <a class="text-black" href="{% url 'catalog:product_review' product.pk %}">{{ product.name }} </a>
+                                        <td>{{ product.description }}</td>
+                                    </h4>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        {% endfor %}
 {% endblock %}
 
 
