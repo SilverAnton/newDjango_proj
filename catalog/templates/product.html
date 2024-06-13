@@ -17,7 +17,7 @@
                                             <img src="{{ product.image | media_filter }}" class="card-img-top" alt="...">
                                         </div>
                                         <a class="text-black" href="{% url 'catalog:product_review' product.pk %}">{{ product.name }} </a>
-                                        <td>{{ product.description }}</td>
+                                        <td>{{ product.description | truncatechars:100}}</td>
                                     </h4>
                                 </tr>
                             </table>
