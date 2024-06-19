@@ -1,43 +1,43 @@
-from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView, ListView, TemplateView
+
 from catalog.models import Product, Category
 
 
-def home(request):
-    return render(request, "home.html")
+class HomePageView(TemplateView):
+    template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def contacts(request):
-    return render(request, "contacts.html")
+class ContactsPageView(TemplateView):
+    template_name = "contacts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def product(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, "product.html", context)
+class ProductListView(ListView):
+    model = Product
 
 
-def category(request):
-    categories = Category.objects.all()
-    context = {'categories': categories}
-    return render(request, "category.html", context)
+class CategoryListView(ListView):
+    model = Category
 
 
-def base(request):
-    context = {
-        'base_templates': 'base'
-    }
-    return render(request, 'base.html', context)
+class BasePageView(TemplateView):
+    template_name = "base.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
-def product_review(request, pk):
-    product_ = get_object_or_404(Product, pk=pk)
-    context = {'product': product_}
-    return render(request, "product_review.html", context)
+class ProductDetailView(DetailView):
+    model = Product
 
 
-def category_review(request):
-    context = {'category_review': 'category_review'}
-    return render(request, "category_review.html", context)
-
-
-
+class CategoryDetailView(DetailView):
+    model = Category
