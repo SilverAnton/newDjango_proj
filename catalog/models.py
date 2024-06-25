@@ -60,6 +60,6 @@ class Blog(models.Model):
         return f"{self.title}: {self.content}"
 
     class Meta:
-        verbose_name = "блог"
-        verbose_name_plural = "блоги"
+        verbose_name = "Блог"
+        verbose_name_plural = "Блоги"
         ordering = ["title", "slug"]
