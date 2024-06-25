@@ -1,6 +1,8 @@
-from django.views.generic import DetailView, ListView, TemplateView
+import reverse
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
-from catalog.models import Product, Category
+from catalog.models import Product, Category, Blog
 
 
 class HomePageView(TemplateView):
@@ -41,3 +43,29 @@ class ProductDetailView(DetailView):
 
 class CategoryDetailView(DetailView):
     model = Category
+
+
+class BlogCreateView(CreateView):
+    model = Blog
+    fields = ['title', 'slug', 'content']
+    success_url = reverse_lazy("catalog:blog_create")
+
+
+
+class BlogListView(ListView):
+    model = Blog
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+
+class BlogUpdateView(UpdateView):
+    model = Blog
+    fields = ['title', 'slug', 'content']
+    success_url = reverse_lazy("catalog:blog_create")
+
+
+class BlogDeleteView(DeleteView):
+    model = Blog
+    success_url = reverse_lazy("catalog:blog_create")
