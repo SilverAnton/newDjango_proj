@@ -1,7 +1,7 @@
-import reverse
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 
+from django.urls import reverse_lazy, reverse
+from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
+from django.utils.text import slugify
 from catalog.models import Product, Category, Blog
 
 
@@ -47,10 +47,28 @@ class CategoryDetailView(DetailView):
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ['title', 'slug', 'content']
+    fields = ['title', 'content', 'is_published']
     success_url = reverse_lazy("catalog:blog_list")
 
+    def form_valid(self, form):
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.slug = slugify(new_post.title)
+            new_post.save()
+        return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse_lazy("catalog:blog_detail", args=[self.object.pk])
+
+    #def form_valid(self, form):
+        #if form.is_valid():
+            #new_blog = form.save
+            #new_blog.slug = slugify(new_blog.title)
+            #new_blog.save()
+        #return super().form_valid(form)
+
+    #def get_success_url(self):
+        #return reverse_lazy("catalog:blogpost_detail", args=[self.object.pk])
 
 class BlogListView(ListView):
     model = Blog
@@ -59,11 +77,27 @@ class BlogListView(ListView):
 class BlogDetailView(DetailView):
     model = Blog
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.views_count += 1
+        obj.save()
+        return obj
+
 
 class BlogUpdateView(UpdateView):
     model = Blog
     fields = ['title', 'slug', 'content']
     success_url = reverse_lazy("catalog:blog_list")
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.slug = slugify(new_post.title)
+            new_post.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("catalog:blog_detail", args=[self.object.pk])
 
 
 class BlogDeleteView(DeleteView):
