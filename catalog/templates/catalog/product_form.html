@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <div class="row">
-
+    <form class='row' method="post" enctype="multipart/form-data">
             <div class="col-6">
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
-                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <button type="submit" class=" btn btn-secondary btn-primary" >
@@ -16,26 +14,19 @@
                                 Создать
                                 {% endif %}
                             </button>
-                        </form>
                     </div>
                 </div>
             </div>
-
-    </div>
-    <div class="row">
             <div class="col-6 " >
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
-                        <form method="post" enctype="multipart/form-data">
                             {{ formset_management_form }}
                             {% for form in formset.forms %}
                             {{ form.as_p }}
                             {% endfor %}
-                        </form>
                     </div>
                 </div>
             </div>
-
+    </form>
 </div>
-
 {% endblock %}
