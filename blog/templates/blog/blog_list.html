@@ -23,9 +23,9 @@
                                 </tr>
 
                             </table>
-                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:blog_detail' blog.pk %}">Открыть</a>
-                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:blog_edit' blog.pk %}">Изменить</a>
-                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:blog_delete' blog.pk %}">Удалить</a>
+                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'blog:blog_detail' blog.pk %}">Открыть</a>
+                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'blog:blog_edit' blog.pk %}">Изменить</a>
+                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'blog:blog_delete' blog.pk %}">Удалить</a>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
         {% endfor %}
         <div class="card">
             <div class="card-body">
-                <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:blog_create' %}">Создать пост</a>
+                <a class="btn btn-secondary btn-primary" type="button" href="{% url 'blog:blog_create' %}">Создать пост</a>
             </div>
         </div>
 {% endblock %}
