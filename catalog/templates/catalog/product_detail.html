@@ -18,6 +18,8 @@
                                     <td>цена: {{ object.price }}p.</td>
                                 </tr>
                             </table>
+                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:product_edit' product.pk %}">Изменить</a>
+                                    <a class="btn btn-secondary btn-primary" type="button" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
                         </div>
                     </div>
                 </div>
