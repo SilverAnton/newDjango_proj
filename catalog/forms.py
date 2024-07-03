@@ -1,8 +1,20 @@
 from django import forms
-from catalog.models import Product
+from catalog.models import Product, Version
+from django.forms import BooleanField
 
 
-class ProductForm(forms.ModelForm):
+class StyleFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for k, v in self.fields.items():
+
+            if isinstance(v, BooleanField):
+                v.widget.attrs['class'] = 'form-check-input'
+            else:
+                v.widget.attrs['class'] = 'form-control'
+
+
+class ProductForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
@@ -16,7 +28,14 @@ class ProductForm(forms.ModelForm):
 
     def clean_description(self):
         cleaned_description = self.cleaned_data.get('description')
-        if cleaned_description in ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
-                            'радар']:
+        if cleaned_description in ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман',
+                                   'полиция',
+                                   'радар']:
             raise forms.ValidationError("Вы не можете добавить продукт c таким описанием")
         return cleaned_description
+
+
+class VersionForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Version
+        fields = '__all__'
