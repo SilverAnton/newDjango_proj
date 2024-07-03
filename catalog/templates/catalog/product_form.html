@@ -12,21 +12,24 @@
                                 Изменить
                                 {% else %}
                                 Создать
-                                {% endif %}
+
                             </button>
+                                {% endif %}
                     </div>
                 </div>
             </div>
+            {% if object %}
             <div class="col-6 " >
                 <div class="card mb-4 rounded-3 shadow-sm">
                     <div class="card-header py-3">
                             {{ formset_management_form }}
                             {% for form in formset.forms %}
-                            {{ form.as_p }}
+                                {{ form.as_p }}
                             {% endfor %}
                     </div>
                 </div>
             </div>
+            {% endif %}
     </form>
 </div>
 {% endblock %}

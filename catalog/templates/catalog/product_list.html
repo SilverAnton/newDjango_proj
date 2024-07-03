@@ -23,6 +23,7 @@
                                         </div>
                                         <a class="text-black" href="{% url 'catalog:product_detail' product.pk %}">{{ product.name }} </a>
                                         <td>{{ product.description | truncatechars:100}}</td>
+                                        <td>версия: {{ product.active_version}}</td>
                                     </h4>
                                 </tr>
                             </table>
