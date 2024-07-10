@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="название категории")
@@ -32,6 +34,7 @@ class Product(models.Model):
     price = models.FloatField(verbose_name="цена продукта")
     created_at = models.DateField(verbose_name="дата создания записи о продукте")
     updated_at = models.DateField(verbose_name="дата изменения записи о продукте")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="owner", related_name="products")
 
     def __str__(self):
         return f"{self.name}: {self.description}, цена: {self.price}"
