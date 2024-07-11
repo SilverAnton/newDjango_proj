@@ -1,12 +1,16 @@
 import string
 
+from django.contrib import messages
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.views import PasswordResetView
+
 from django.core.mail import send_mail
+from django.core.validators import validate_email
 from django.http import HttpResponseRedirect
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
+from django.utils.crypto import get_random_string
 from django.views.generic import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
@@ -22,18 +26,17 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
         user.is_active = False
         token = secrets.token_hex(16)
         user.token = token
         user.save()
         host = self.request.get_host()
         url = f'http://{host}/users/email-confirm/{token}/'
-        send_mail(
+        user.email_user(
             subject="Подтверждение почты",
             message=f"Привет, подтвердите свой email по ссылке {url}, для завершения регистрации",
-            from_email=EMAIL_HOST_USER,
-            recipient_list=[user.email]
+
         )
         return super().form_valid(form)
 
@@ -54,11 +57,11 @@ def email_verification(request, token):
     return redirect(reverse("users:login"))
 
 
-def make_random_password():
-    character = string.ascii_letters + string.digits
-    password = "".join(secrets.choice(character) for i in range(12))
+#def make_random_password():
+#character = string.ascii_letters + string.digits
+#password = "".join(secrets.choice(character) for i in range(12))
 
-    return password
+# return password
 
 
 class UserPasswordResetView(PasswordResetView):
@@ -71,19 +74,21 @@ class UserPasswordResetView(PasswordResetView):
             user_email = self.request.POST.get('email')
             user = User.objects.filter(email=user_email).first()
             if user:
-                new_password = make_random_password()
+                new_password = get_random_string(length=12)
                 user.set_password(new_password)
                 user.save()
                 try:
-                    send_mail(
+                    user.email_user(
                         subject="Восстановление пароля",
                         message=f"Здравствуйте! Ваш пароль для доступа на наш сайт изменен:\n"
                                 f"Данные для входа:\n"
                                 f"Email: {user_email}\n"
-                                f"Пароль: {new_password}",
-                        from_email=EMAIL_HOST_USER,
-                        recipient_list=[user.email]
+                                f"Пароль: {new_password}"
                     )
                 except Exception:
                     print(f'Ошибка пр отправке письма, {user.email}')
                 return HttpResponseRedirect(reverse('users:login'))
+            else:
+                # Обработка неверного email-адреса
+                context = {'error_message': 'Такой email не зарегистрирован.'}
+                return render(self.request, 'users/recovery_form.html', context)
