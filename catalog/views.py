@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, ListView, TemplateView, CreateView, UpdateView, DeleteView
 from django.utils.text import slugify
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Category, Version
 
 
@@ -24,7 +25,7 @@ class ContactsPageView(TemplateView):
         return context
 
 
-class ProductCreateView(CreateView, LoginRequiredMixin):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
 
@@ -77,14 +78,14 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        VersionFormSet = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        VersionFormSet = inlineformset_factory(Product, Version, form=VersionForm, extra=0)
         if self.request.method == 'POST':
             context['formset'] = VersionFormSet(self.request.POST, instance=self.object)
         else:
@@ -102,6 +103,16 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("catalog:product_detail", args=[self.object.pk])
+
+    def get_form_class(self):
+        user = self.request.user
+
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perm("catalog.can_edit_is_published") and user.has_perm(
+                "catalog.can_edit_description") and user.has_perm("catalog.can_edit_category"):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(DeleteView):
