@@ -16,6 +16,9 @@
                                 <tr>
                                     <td>описание: {{ object.description }}</td>
                                     <td>цена: {{ object.price }}p.</td>
+                                    {% for version in object.version.all %}
+                                        <td>версия: {{ version }}</td>
+                                    {% endfor %}
 
                                 </tr>
                             </table>
