@@ -7,6 +7,7 @@ from django.utils.text import slugify
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Category, Version
+from catalog.services import get_category_from_cache
 
 
 class HomePageView(TemplateView):
@@ -64,6 +65,9 @@ class ProductListView(ListView):
 
 class CategoryListView(ListView):
     model = Category
+
+    def get_queryset(self):
+        return get_category_from_cache()
 
 
 class BasePageView(TemplateView):
